@@ -1,12 +1,16 @@
 package com.jugbub;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Window {
 
@@ -53,24 +57,35 @@ public class Window {
                 JTextField emulatorPath = new JTextField("c:\\");
                 JTextField extension = new JTextField();
                 JLabel path = new JLabel("Path:");
-                JLabel type = new JLabel("type:");
+                JLabel type = new JLabel("types to execute:");
                 JLabel example = new JLabel("(txt, iso, etc)");
-                JTree tree = new JTree();
+                JButton browse = new JButton("Browse");
+                JButton save = new JButton("Save");
 
                 frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                frame.setSize(160*2,90*2);
 
-                emulatorPath.setBounds(40,30,200,24);
-                extension.setBounds(emulatorPath.getX(),emulatorPath.getY()+54,35,24);
-                System.out.println(emulatorPath.getX());
+
+                emulatorPath.setBounds(20,30,200,24);
+                extension.setBounds(emulatorPath.getX(),emulatorPath.getY()+54,70,24);
+                browse.setBounds(emulatorPath.getX()+emulatorPath.getWidth(),emulatorPath.getY(),/*16*browse.getText().length()-16*/50,23);
+                browse.setBackground(new Color(230, 230, 230));
+                browse.setMargin(new Insets(0,0,0,0));
+
+                setupSave(save, emulatorPath, extension);
+                setupBrowse(browse,emulatorPath);
+
+                System.out.println(Color.WHITE);
 
                 path.setBounds(emulatorPath.getX(),emulatorPath.getY()-24,16*path.getText().length(),24);
                 type.setBounds(emulatorPath.getX(),emulatorPath.getY()+30,16*type.getText().length(),24);
-                example.setBounds(extension.getX()+extension.getWidth(),extension.getY(),16*example.getText().length(),extension.getHeight());
+                example.setBounds(extension.getX()+extension.getWidth(),extension.getY(),5*example.getText().length(),extension.getHeight());
 
+                save.setBounds(example.getX()+example.getWidth()+15,example.getY(),72,30);
 
+                frame.setSize((int)(emulatorPath.getX()*2+emulatorPath.getWidth()+browse.getWidth()),90*2);
 
-                frame.add(tree);
+                frame.add(save);
+                frame.add(browse);
                 frame.add(type);
                 frame.add(path);
                 frame.add(emulatorPath);
@@ -79,6 +94,66 @@ public class Window {
 
                 frame.setLayout(null);
                 frame.setVisible(true);
+            }
+        });
+    }
+
+    private static void setupSave(JButton save, JTextField emulatorPath, JTextField extensionP){
+        File file = new File("src/com/jugbub/EmulatorPaths.txt");
+        String emulator = emulatorPath.getText();
+        String extension = extensionP.getText();
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Scanner input = null;
+                try {
+                    input = new Scanner(new File("C:\\Users\\Sebastian\\Documents\\ALL MINECRAFT BLOCKS.txt"));
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+
+
+                try {
+                    Files.write(Paths.get(file.getAbsolutePath()), "\nThank you very much".getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+/*                FileWriter fileWriter = null;
+                try {
+                    fileWriter = new FileWriter(file,true);
+                    BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
+                    bufferWriter.write(data);
+                    bufferWriter.close();
+                    fileWriter.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }*/
+                while (input.hasNextLine())
+                {
+                    System.out.println(input.nextLine());
+
+                }
+            }
+        });
+    }
+
+    private static void setupBrowse(JButton browse,JTextField emulatorPath){
+        browse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser("C:\\users");
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter filter = new FileNameExtensionFilter(".exe","exe");
+                fileChooser.setFileFilter(filter);
+
+                int i = fileChooser.showOpenDialog(null);
+                if (i == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    String filepath = file.getPath();
+
+                    emulatorPath.setText(filepath);
+                }
             }
         });
     }
