@@ -103,32 +103,11 @@ public abstract class EmulatorPaths {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Scanner input = null;
-
-                try {
-                    input = new Scanner(new File("src/com/jugbub/EmulatorPaths.txt"));
-                } catch (FileNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
-
-
                 try {
                     Files.write(Paths.get(file.getAbsolutePath()), String.format("%s;%s",emulatorPath.getText(),extension.getText()).getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+                    EmulatorPathsTXT.setEmulatorPathsTXT(EmulatorPathsTXT.getEmulatorPathsTXT());
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
-                }
-
-/*                while (input.hasNextLine())
-                {
-                    System.out.println(input.nextLine());
-                }*/
-                try {
-                    //System.out.println(Arrays.deepToString(EmulatorPathsTXT.getEmulatorPathsTXT().toArray()));
-                    //System.out.println("------------------------------");
-                    EmulatorPathsTXT.setEmulatorPathsTXT(EmulatorPathsTXT.getEmulatorPathsTXT());
-                    //System.out.println(Arrays.deepToString(EmulatorPathsTXT.getEmulatorPathsTXT().toArray()));
-                } catch (IOException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
                 }
 
                 emulatorPath.setText("c:\\");

@@ -40,6 +40,7 @@ public class Window {
         EmulatorPaths.setupEmulatorPath(emulatorPath);
         EmulatorPaths.setupClearEmulatorPathsTXT(clearEmulatorPathsTXT);
 /*        gamePath.addActionListener(this);*/
+        GamePaths.setupEmulatorPath(gamePath);
 
         emulator.add(emulatorPath);
         emulator.add(clearEmulatorPathsTXT);
