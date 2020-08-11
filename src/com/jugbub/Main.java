@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         ArrayList<File> emulators = Inits.initEmulators(new File("emulators"));
-        ArrayList<JButton> buttons = Inits.initButtons(emulators.size());
+        ArrayList<Launch> buttons = Inits.initButtons();
         ArrayList<Icon> icons = Inits.initIcons(emulators);
 
         Window.window(emulators,buttons,icons);

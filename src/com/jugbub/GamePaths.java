@@ -12,6 +12,8 @@ import java.lang.reflect.GenericArrayType;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class GamePaths {
@@ -20,18 +22,35 @@ public abstract class GamePaths {
         emulatorPath.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                ArrayList<String> filepath = new ArrayList<>();
+
                 //setupWindow();
                 try {
                     JFileChooser fileChooser = new JFileChooser("C:\\users");
+                    fileChooser.setDialogTitle("Select Directory");
+                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                     fileChooser.setAcceptAllFileFilterUsed(false);
 
                     int i = fileChooser.showOpenDialog(null);
                     if (i == JFileChooser.APPROVE_OPTION) {
                         File file = fileChooser.getSelectedFile();
-                        String filepath = file.getPath();
+
+                        /*System.out.println(1);
+
+                        if(file.isDirectory()){
+                            for (int j = 0; j < Objects.requireNonNull(file.listFiles()).length; j++) {
+                                System.out.println(2);
+                                if(!file.isDirectory())
+                                    System.out.println(4);
+                                    filepath.add(Objects.requireNonNull(file.listFiles())[j].getPath());
+                            }
+                        }else
+                            System.out.println(3);
+                            filepath.add(file.getPath());*/
 
 
-                        GamePathsTXT.writeToFile(filepath);
+                        GamePathsTXT.writeToFile(file.getPath());
                     }
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -122,14 +141,13 @@ public abstract class GamePaths {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                JFileChooser fileChooser = new JFileChooser("C:\\users");
-                fileChooser.setAcceptAllFileFilterUsed(false);
+                    JFileChooser fileChooser = new JFileChooser("C:\\users");
+                    fileChooser.setAcceptAllFileFilterUsed(false);
 
-                int i = fileChooser.showOpenDialog(null);
-                if (i == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    String filepath = file.getPath();
-
+                    int i = fileChooser.showOpenDialog(null);
+                    if (i == JFileChooser.APPROVE_OPTION) {
+                        File file = fileChooser.getSelectedFile();
+                        String filepath = file.getPath();
 
                         Files.write(Paths.get(file.getAbsolutePath()), filepath.getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
                     }
